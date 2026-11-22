@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Василисе ❤</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap">
+<style>
+  :root {
+    --bg1: #ffe6ee; --bg2: #ffb8cf;
+    --text: #7a0f3a; --muted: #b05580;
+    --accent: #e11d48; --glow: rgba(225, 29, 72, .45);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg1: #2a0a18; --bg2: #55102e;
+      --text: #ffe6ee; --muted: #e8a0b8;
+      --accent: #ff4d79; --glow: rgba(255, 77, 121, .5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg1: #2a0a18; --bg2: #55102e;
+    --text: #ffe6ee; --muted: #e8a0b8;
+    --accent: #ff4d79; --glow: rgba(255, 77, 121, .5);
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  body {
+    margin: 0; height: 100%; overflow: hidden;
+    background-color: var(--bg1);
+    background-image: linear-gradient(160deg, var(--bg1), var(--bg2));
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; -webkit-user-select: none;
+  }
+  main {
+    position: relative; z-index: 1; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px; gap: 8px;
+  }
+  .heart { width: min(52vw, 230px); cursor: pointer; animation: beat 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 10px 28px var(--glow)); }
+  .heart path { fill: var(--accent); }
+  .heart.pulse { animation: pulse .45s ease-out; }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); } 15% { transform: scale(1.14); }
+    30% { transform: scale(1); } 45% { transform: scale(1.09); } 60% { transform: scale(1); }
+  }
+  @keyframes pulse { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+  h1 { font-family: Pacifico, "Brush Script MT", cursive; font-weight: 400;
+    font-size: clamp(40px, 13vw, 64px); margin: 14px 0 0; color: var(--accent); }
+  .big { font-size: clamp(24px, 7.4vw, 34px); line-height: 1.25; margin: 6px 0 0; font-style: italic; }
+  .small { font-size: clamp(16px, 4.6vw, 19px); line-height: 1.5; margin: 10px 0 0; max-width: 22em; color: var(--muted); }
+  .hint { font-size: 14px; margin-top: 22px; color: var(--muted); opacity: .8; }
+
+  .line { opacity: 0; transform: translateY(10px); animation: show 1s ease forwards; animation-delay: var(--d, 0s); }
+  @keyframes show { to { opacity: 1; transform: none; } }
+
+  #fx { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .fl { position: absolute; opacity: 0; line-height: 1;
+    animation: fly var(--dur, 2s) ease-out forwards; transform: translate(-50%, -50%); }
+  @keyframes fly {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+    15% { opacity: .95; }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--rise))) scale(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce) { .heart { animation: none; } }
+</style>
+</head>
+<body>
+<div id="fx"></div>
+<main>
+  <div class="line" style="--d:.1s">
+    <svg id="heart" class="heart" viewBox="0 0 24 24" aria-label="Сердце">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+  </div>
+  <h1 class="line" style="--d:.8s">Василиса</h1>
+  <p class="big line" style="--d:1.6s">Я тебя очень сильно люблю</p>
+  <p class="small line" style="--d:2.6s">Ты делаешь каждый мой день теплее, ярче и счастливее. Спасибо, что ты есть.</p>
+  <p class="hint line" style="--d:3.8s">Нажимай на сердце ❤</p>
+</main>
+
+<script>
+  var fx = document.getElementById('fx');
+  var heart = document.getElementById('heart');
+  var icons = ['❤️', '💖', '💗', '💕'];
+  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function pop(x, y, rise, dur, size) {
+    var s = document.createElement('span');
+    s.className = 'fl';
+    s.textContent = icons[Math.floor(Math.random() * icons.length)];
+    s.style.left = x + 'px';
+    s.style.top = y + 'px';
+    s.style.fontSize = size + 'px';
+    s.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+    s.style.setProperty('--rise', rise + 'px');
+    s.style.setProperty('--dur', dur + 's');
+    fx.appendChild(s);
+    setTimeout(function () { s.remove(); }, dur * 1000 + 100);
+  }
+
+  document.addEventListener('pointerdown', function (e) {
+    for (var i = 0; i < 8; i++) {
+      (function (k) {
+        setTimeout(function () {
+          pop(e.clientX, e.clientY, -(110 + Math.random() * 120), 1.8 + Math.random() * .8, 18 + Math.random() * 18);
+        }, k * 45);
+      })(i);
+    }
+    if (e.target.closest && e.target.closest('#heart')) {
+      heart.classList.remove('pulse');
+      void heart.getBoundingClientRect();
+      heart.classList.add('pulse');
+      if (navigator.vibrate) navigator.vibrate(30);
+    }
+  });
+
+  heart.addEventListener('animationend', function (e) {
+    if (e.animationName === 'pulse') heart.classList.remove('pulse');
+  });
+
+  if (!calm) {
+    setInterval(function () {
+      if (document.hidden) return;
+      pop(Math.random() * window.innerWidth, window.innerHeight + 20,
+          -(window.innerHeight + 60), 6 + Math.random() * 3, 14 + Math.random() * 14);
+    }, 900);
+  }
+</script>
+</body>
+</html>
